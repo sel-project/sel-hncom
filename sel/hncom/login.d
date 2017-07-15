@@ -99,6 +99,8 @@ import sel.hncom.io : IO;
 	enum ubyte ID = 3;
 
 	enum int UNLIMITED = -1;
+	
+	alias GameInfo = Tuple!(string, "motd", uint[], "protocols", bool, "onlineMode", ushort, "port");
 
 	/**
 	 * Server's id, either given by a snoop system or randomly generated at runtime.
@@ -121,7 +123,7 @@ import sel.hncom.io : IO;
 	/**
 	 * Informations about the games supported by the hub.
 	 */
-	Tuple!(string, "motd", uint[], "protocols", bool, "onlineMode", ushort, "port")[ubyte] gamesInfo;
+	GameInfo[ubyte] gamesInfo;
 
 	/**
 	 * Number of players currently online and connected to other nodes.
@@ -192,7 +194,9 @@ import sel.hncom.io : IO;
 
 	enum ubyte ID = 4;
 
-	enum uint ULIMITED = 0;
+	enum uint UNLIMITED = 0;
+
+	alias Plugin = Tuple!(string, "name", string, "version_");
 
 	/**
 	 * Informations about the games accepted by the node. There should be at least
@@ -209,7 +213,7 @@ import sel.hncom.io : IO;
 	/**
 	 * List of plugins loaded on the node for creating queries on the hub.
 	 */
-	Tuple!(string, "name", string, "version_")[] plugins;
+	Plugin[] plugins;
 
 	/**
 	 * Optional informations about the server's software and system,

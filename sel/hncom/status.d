@@ -179,6 +179,11 @@ import sel.hncom.io : IO;
 	uint sender;
 
 	/**
+	 * Indicates whether the message was broadcasted to every connected node.
+	 */
+	bool broadcasted;
+
+	/**
 	 * Bytes received. It could be serialised data or a plugin-defined packet.
 	 */
 	ubyte[] payload;
@@ -264,8 +269,9 @@ import sel.hncom.io : IO;
 
 	enum : ubyte {
 
-		HUB,
+		HUB = 1,
 		EXTERNAL_CONSOLE,
+		REMOTE_PANEL,
 		RCON,
 
 	}
@@ -279,7 +285,7 @@ import sel.hncom.io : IO;
 	 * Address of the sender if the command has been sent from an external source.
 	 * It's `null` when the hub is the sender.
 	 */
-	Address address;
+	Address sender;
 
 	/**
 	 * Commands and arguments that should be executed on the node.
@@ -293,7 +299,7 @@ import sel.hncom.io : IO;
 	 */
 	uint commandId;
 
-	mixin IO!(origin, address, command, commandId);
+	mixin IO!(origin, sender, command, commandId);
 
 }
 

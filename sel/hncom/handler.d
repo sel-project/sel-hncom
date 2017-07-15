@@ -24,21 +24,21 @@ static import sel.hncom.util;
 static import sel.hncom.status;
 static import sel.hncom.player;
 
-interface Handler(alias type) if(is(type == clientbound )|| is(type == serverbound)) {
+interface HncomHandler(alias type) if(is(type == clientbound )|| is(type == serverbound)) {
 	
 	mixin((){
 		string ret;
 		foreach(section ; TypeTuple!("util", "status", "player")) {
 			foreach(member ; __traits(allMembers, mixin("sel.hncom." ~ section))) {
 				static if(member != "Packets" && hasUDA!(__traits(getMember, mixin("sel.hncom." ~ section), member), type)) {
-					ret ~= "void handle" ~ capitalize(section) ~ member ~ "(sel.hncom." ~ section ~ "." ~ member ~ " packet);";
+					ret ~= "protected void handle" ~ capitalize(section) ~ member ~ "(sel.hncom." ~ section ~ "." ~ member ~ " packet);";
 				}
 			}
 		}
 		return ret;
 	}());
 
-	final void handle(ubyte[] buffer) {
+	public final void handleHncom(ubyte[] buffer) {
 		assert(buffer.length);
 		switch(buffer[0]) {
 			foreach(section ; TypeTuple!("util", "status", "player")) {
@@ -53,7 +53,7 @@ interface Handler(alias type) if(is(type == clientbound )|| is(type == serverbou
 		}
 	}
 
-	final void handlePlayerPackets(sel.hncom.player.Packets packets) {
+	protected final void handlePlayerPackets(sel.hncom.player.Packets packets) {
 		foreach(packet ; packets.packets) {
 			this.handlePlayerPacketsImpl(packets.hubId, packet.id, packet.payload);
 		}
@@ -75,8 +75,8 @@ interface Handler(alias type) if(is(type == clientbound )|| is(type == serverbou
 
 unittest {
 
-	abstract class TestClientbound : Handler!clientbound {}
+	abstract class TestClientbound : HncomHandler!clientbound {}
 
-	abstract class TestServerbound : Handler!serverbound {}
+	abstract class TestServerbound : HncomHandler!serverbound {}
 
 }

@@ -71,6 +71,10 @@ mixin template IO(E...) {
 
 	enum ubyte ID = 22;
 
+	alias ServerAddress = Tuple!(string, "ip", ushort, "port");
+
+	alias Skin = Tuple!(string, "name", ubyte[], "data");
+
 	// reason
 	enum : ubyte {
 
@@ -151,12 +155,12 @@ mixin template IO(E...) {
 	 * but the field of this value will be different (`localhost` for the first client and
 	 * `127.0.0.1` for the latter).
 	 */
-	Tuple!(string, "ip", ushort, "port") serverAddress;
+	ServerAddress serverAddress;
 
 	/**
 	 * Client's skin, given by the client or downloaded from Mojang's services in online mode.
 	 */
-	Tuple!(string, "name", ubyte[], "data") skin;
+	Skin skin;
 
 	/**
 	 * Client's language, in the same format as HubInfo's language field, which should be updated
@@ -193,9 +197,10 @@ mixin template IO(E...) {
 	// reason
 	enum : ubyte {
 
-		LEFT,		/// The player has closed the connection.
-		TIMED_OUT,	/// The hub has closed the connection because didn't had any response from the client for too long.
-		KICKED,		/// The player has been manually kicked.
+		LEFT,			/// The player has closed the connection.
+		TIMED_OUT,		/// The hub has closed the connection because didn't had any response from the client for too long.
+		KICKED,			/// The player has been manually kicked.
+		TRANSFERRED,	/// The player has been transferred by the hub
 
 	}
 
@@ -399,6 +404,9 @@ mixin template IO(E...) {
 
 }
 
+/**
+ * Updates the packet loss between the player and the hub.
+ */
 @clientbound struct UpdatePacketLoss {
 
 	enum ubyte ID = 31;
