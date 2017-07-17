@@ -173,10 +173,10 @@ mixin template IO(E...) {
 	 * ---
 	 * // pocket
 	 * {
-	 *    "version": "1.1.1.3",
 	 *    "edu": false,
-	 *    "os": 7,
-	 *    "model": "ONEPLUS A0001"
+	 *    "GameVersion": "1.1.1.3",
+	 *    "DeviceOS": 7,
+	 *    "DeviceModel": "ONEPLUS A0001"
 	 * }
 	 * ---
 	 */

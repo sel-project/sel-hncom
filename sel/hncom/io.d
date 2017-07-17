@@ -118,7 +118,7 @@ void encodeLength(size_t _length, ref ubyte[] buffer) {
 	static if(is(size_t == uint)) {
 		alias length = _length;
 	} else {
-		immutable length = cast(uint)_length;
+		uint length = cast(uint)_length;
 	}
 	encodeType(length, buffer);
 }
