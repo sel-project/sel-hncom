@@ -180,7 +180,7 @@ T decodeType(T)(ubyte[] buffer, ref size_t index) {
 			ubyte next;
 			do {
 				next = buffer[index++];
-				ret |= (next << shift);
+				ret |= ((next & 0b0111_1111) << shift);
 				shift += 7;
 			} while(next & 0b1000_0000);
 			return ret;
