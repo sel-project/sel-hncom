@@ -72,7 +72,8 @@ import sel.hncom.io : IO;
 		INVALID_NAME_LENGTH,		/// The name is too short or too long
 		INVALID_NAME_CHARACTERS,	/// The name contains invalid characters
 		NAME_ALREADY_USED,			/// There's already a node connected with the same name
-		NAME_RESERVED				/// The name cannot be used because the hub has reserved it for something else
+		NAME_RESERVED,				/// The name cannot be used because the hub has reserved it for something else
+		BLOCKED_BY_PLUGIN,			/// A plugin has blocked the node from connecting
 
 	}
 

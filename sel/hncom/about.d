@@ -14,7 +14,7 @@
  */
 module sel.hncom.about;
 
-enum uint __PROTOCOL__ = 3;
+enum uint __PROTOCOL__ = 4;
 
 enum ubyte __JAVA__ = 0;
 

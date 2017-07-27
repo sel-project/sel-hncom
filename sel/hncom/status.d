@@ -239,11 +239,31 @@ import sel.hncom.io : IO;
 }
 
 /**
+ * Updates the number of players that can be accepted by the node.
+ * If the given number is smaller than the players currently connected
+ * to the node no player should be kicked.
+ */
+@serverbound struct UpdateMaxPlayers {
+
+	enum ubyte ID = 15;
+
+	enum uint UNLIMITED = 0;
+
+	/**
+	 * Maximum number of players accepted by node.
+	 */
+	uint max;
+
+	mixin IO!(max);
+
+}
+
+/**
  * Updates the usage of the system's resources of the node.
  */
 @serverbound struct UpdateUsage {
 
-	enum ubyte ID = 15;
+	enum ubyte ID = 16;
 
 	/**
 	 * Kibibytes of RAM used by the node.
@@ -265,7 +285,7 @@ import sel.hncom.io : IO;
  */
 @clientbound struct RemoteCommand {
 
-	enum ubyte ID = 16;
+	enum ubyte ID = 17;
 
 	enum : ubyte {
 
@@ -308,7 +328,7 @@ import sel.hncom.io : IO;
  */
 @serverbound struct AddWorld {
 	
-	enum ubyte ID = 17;
+	enum ubyte ID = 18;
 
 	/**
 	 * Id of the world. It's unique on the node.
@@ -340,7 +360,7 @@ import sel.hncom.io : IO;
  */
 @serverbound struct RemoveWorld {
 	
-	enum ubyte ID = 18;
+	enum ubyte ID = 19;
 
 	/**
 	 * Id of the world that has been removed, previosly added using the
@@ -354,9 +374,11 @@ import sel.hncom.io : IO;
 
 @clientbound struct ListInfo {
 
-	alias Entry = Tuple!(ubyte, "game", UUID, "uuid", string, "username");
+	alias EntryUUID = Tuple!(ubyte, "game", UUID, "uuid");
 
-	enum ubyte ID = 19;
+	alias EntryUsername = Tuple!(ubyte, "game", string, "username");
+
+	enum ubyte ID = 20;
 
 	enum : ubyte {
 
@@ -367,22 +389,19 @@ import sel.hncom.io : IO;
 
 	ubyte list;
 
-	Entry[] entries;
+	EntryUUID[] entriesByUUID;
+
+	EntryUsername[] entriesByUsername;
+
+	string[] entriesByIp;
 
 	mixin IO!(list, entries);
 
 }
 
-@clientbound @serverbound struct UpdateList {
+@clientbound @serverbound struct UpdateListByUUID {
 
-	enum ubyte ID = 20;
-
-	enum : ubyte {
-		
-		WHITELIST,
-		BLACKLIST
-		
-	}
+	enum ubyte ID = 21;
 
 	ubyte list;
 
@@ -390,15 +409,39 @@ import sel.hncom.io : IO;
 
 	UUID uuid;
 
+	mixin IO!(list, game, uuid);
+
+}
+
+@clientbound @serverbound struct UpdateListByUsername {
+
+	enum ubyte ID = 22;
+
+	ubyte list;
+
+	ubyte game;
+
 	string username;
 
-	mixin IO!(list, game, uuid, username);
+	mixin IO!(list, game, username);
+
+}
+
+@clientbound @serverbound struct UpdateListByIp {
+
+	enum ubyte ID = 23;
+
+	ubyte list;
+
+	string ip;
+
+	mixin IO!(list, ip);
 
 }
 
 @clientbound struct PanelCredentials {
 
-	enum ubyte ID = 21;
+	enum ubyte ID = 24;
 
 	string address;
 	ubyte[64] hash;
