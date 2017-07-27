@@ -395,7 +395,7 @@ import sel.hncom.io : IO;
 
 	string[] entriesByIp;
 
-	mixin IO!(list, entries);
+	mixin IO!(list, entriesByUUID, entriesByUsername, entriesByIp);
 
 }
 
