@@ -339,10 +339,10 @@ mixin template IO(E...) {
 }
 
 /**
- * Update's the player's view distance (or chunk radius).
- * This packet is sent when the client updates its view distance and the node accepts it.
+ * Notifies the node that the player's view distance has been updated client-side.
+ * The node may decide to not accept the new view distance and not send the required chunks.
  */
-@serverbound struct UpdateViewDistance {
+@clientbound struct UpdateViewDistance {
 
 	enum ubyte ID = 31;
 
@@ -352,7 +352,7 @@ mixin template IO(E...) {
 	uint hubId;
 
 	/**
-	 * Player's new view distance. The range is defined by the node.
+	 * Player's new view distance as indicated by the client.
 	 */
 	uint viewDistance;
 
@@ -363,7 +363,7 @@ mixin template IO(E...) {
 /**
  * Updates the player's language when the client changes it.
  */
-@serverbound struct UpdateLanguage {
+@clientbound struct UpdateLanguage {
 
 	enum ubyte ID = 32;
 
@@ -484,7 +484,7 @@ unittest {
 	UpdateDisplayName(42, "Steve").addTo(packets);
 	UpdateViewDistance(42, 16).addTo(packets);
 	import std.conv;
-	assert(packets.encode() == [35, 42, 2, UpdateDisplayName.ID, 6, 5, 'S', 't', 'e', 'v', 'e', UpdateViewDistance.ID, 1, 16]);
+	assert(packets.encode() == [Packets.ID, 42, 2, UpdateDisplayName.ID, 6, 5, 'S', 't', 'e', 'v', 'e', UpdateViewDistance.ID, 1, 16]);
 
 	packets = Packets.fromBuffer([100, 3, UpdateLatency.ID, 1, 1, UpdateLatency.ID, 1, 2, UpdateLatency.ID, 2, 130, 1]);
 	assert(packets.hubId == 100);
