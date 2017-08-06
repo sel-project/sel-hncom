@@ -73,7 +73,7 @@ mixin template IO(E...) {
 
 	alias ServerAddress = Tuple!(string, "ip", ushort, "port");
 
-	alias Skin = Tuple!(string, "name", ubyte[], "data");
+	alias Skin = Tuple!(string, "name", ubyte[], "data", ubyte[], "cape", string, "geometryName", ubyte[], "geometryData");
 
 	// reason
 	enum : ubyte {

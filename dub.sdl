@@ -1,5 +1,5 @@
 name "sel-hncom"
-description "The hub-node communication protocol"
+description "The hub-node communication protocol for Minecraft servers"
 authors "sel-project"
 copyright "Copyright © 2017 SEL"
 license "LGPL-3.0"
