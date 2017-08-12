@@ -188,14 +188,14 @@ mixin template IO(E...) {
 	 * {
 	 *    "edu": false,
 	 *    "GameVersion": "1.1.1.3",
-	 *    "DeviceOS": 7,
+	 *    "DeviceOS": 1,
 	 *    "DeviceModel": "ONEPLUS A0001"
 	 * }
 	 * ---
 	 */
 	JSONValue gameData;
 
-	mixin IO!(reason, type, protocol, version_, uuid, username, displayName, dimension, viewDistance, clientAddress, serverAddress, skin, language, gameData);
+	mixin IO!(reason, type, protocol, version_, uuid, username, displayName, permissionLevel, dimension, viewDistance, clientAddress, serverAddress, skin, language, gameData);
 
 }
 
