@@ -106,7 +106,7 @@ mixin template IO(E...) {
 	ubyte reason;
 
 	/**
-	 * Game used by the player, which could either be Minecraft or Minecraft: Pocket Edition.
+	 * Game used by the player, which could either be Minecraft: Java Edition or Minecraft (Bedrock Engine).
 	 * It should be one of the keys given in NodeInfo's acceptedGames field.
 	 */
 	ubyte type;
@@ -184,7 +184,7 @@ mixin template IO(E...) {
 	/**
 	 * Example:
 	 * ---
-	 * // pocket
+	 * // bedrock engine
 	 * {
 	 *    "edu": false,
 	 *    "GameVersion": "1.1.1.3",
@@ -199,13 +199,41 @@ mixin template IO(E...) {
 
 }
 
+struct AddSub {
+
+	alias Skin = Add.Skin;
+
+	enum ubyte ID = 26;
+
+	uint hubId;
+
+	uint parent;
+
+	UUID uuid;
+
+	string username;
+
+	string displayName;
+
+	ubyte permissionLevel;
+
+	ubyte dimension;
+
+	Skin skin;
+
+	JSONValue gameData;
+
+	mixin IO!(parent, uuid, username, displayName, permissionLevel, dimension, skin, gameData);
+
+}
+
 /**
  * Removes a player from the node.
  * If the player is removed using Kick or Transfer this packet is not sent.
  */
 @clientbound struct Remove {
 
-	enum ubyte ID = 26;
+	enum ubyte ID = 27;
 
 	// reason
 	enum : ubyte {
@@ -237,7 +265,7 @@ mixin template IO(E...) {
  */
 @serverbound struct Kick {
 
-	enum ubyte ID = 27;
+	enum ubyte ID = 28;
 
 	/**
 	 * Player to be kicked.
@@ -272,7 +300,7 @@ mixin template IO(E...) {
  */
 @serverbound struct Transfer {
 
-	enum ubyte ID = 28;
+	enum ubyte ID = 29;
 
 	// on fail
 	enum : ubyte {
@@ -311,7 +339,7 @@ mixin template IO(E...) {
  */
 @serverbound struct UpdateDisplayName {
 
-	enum ubyte ID = 29;
+	enum ubyte ID = 30;
 
 	/**
 	 * Player's unique id given by the hub.
@@ -334,7 +362,7 @@ mixin template IO(E...) {
  */
 @serverbound struct UpdateWorld {
 
-	enum ubyte ID = 30;
+	enum ubyte ID = 31;
 
 	/**
 	 * Player's unique id given by the hub.
@@ -364,7 +392,7 @@ mixin template IO(E...) {
 		
 	}
 
-	enum ubyte ID = 31;
+	enum ubyte ID = 32;
 
 	/**
 	 * Player's unique id given by the hub.
@@ -383,7 +411,7 @@ mixin template IO(E...) {
  */
 @clientbound struct UpdateViewDistance {
 
-	enum ubyte ID = 32;
+	enum ubyte ID = 33;
 
 	/**
 	 * Player's unique id given by the hub.
@@ -404,7 +432,7 @@ mixin template IO(E...) {
  */
 @clientbound struct UpdateLanguage {
 
-	enum ubyte ID = 33;
+	enum ubyte ID = 34;
 
 	/**
 	 * Player's unique id given by the hub.
@@ -425,7 +453,7 @@ mixin template IO(E...) {
  */
 @clientbound struct UpdateLatency {
 
-	enum ubyte ID = 34;
+	enum ubyte ID = 35;
 
 	/**
 	 * Player's unique id given by the hub.
@@ -448,12 +476,17 @@ mixin template IO(E...) {
  */
 @clientbound struct UpdatePacketLoss {
 
-	enum ubyte ID = 35;
+	enum ubyte ID = 36;
 
 	/**
 	 * Player's unique id given by the hub.
 	 */
 	uint hubId;
+
+	/**
+	 * Percentage of lost packets, from 0% (no packet lost) to 100% (every
+	 * packet lost).
+	 */
 	float packetLoss;
 
 	mixin IO!(packetLoss);
@@ -462,7 +495,7 @@ mixin template IO(E...) {
 
 @clientbound @serverbound struct GamePacket {
 	
-	enum ubyte ID = 36;
+	enum ubyte ID = 37;
 
 	/**
 	 * Player's unique id given by the hub.
@@ -476,7 +509,7 @@ mixin template IO(E...) {
 
 @serverbound struct SerializedGamePacket {
 
-	enum ubyte ID = 37;
+	enum ubyte ID = 38;
 
 	/**
 	 * Player's unique id given by the hub.
@@ -490,7 +523,7 @@ mixin template IO(E...) {
 
 @serverbound struct OrderedGamePacket {
 
-	enum ubyte ID = 38;
+	enum ubyte ID = 39;
 
 	/**
 	 * Player's unique id given by the hub.
@@ -505,7 +538,7 @@ mixin template IO(E...) {
 
 @clientbound @serverbound struct Packets {
 
-	enum ubyte ID = 39;
+	enum ubyte ID = 40;
 
 	/**
 	 * Player's unique id given by the hub.

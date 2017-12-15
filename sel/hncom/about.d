@@ -14,11 +14,11 @@
  */
 module sel.hncom.about;
 
-enum uint __PROTOCOL__ = 4;
+enum uint __PROTOCOL__ = 5;
 
-enum ubyte __JAVA__ = 0;
+enum ubyte __BEDROCK__ = 0;
 
-enum ubyte __POCKET__ = 1;
+enum ubyte __JAVA__ = 1;
 
 enum clientbound;
 
