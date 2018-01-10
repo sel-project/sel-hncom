@@ -199,41 +199,13 @@ mixin template IO(E...) {
 
 }
 
-struct AddSub {
-
-	alias Skin = Add.Skin;
-
-	enum ubyte ID = 26;
-
-	uint hubId;
-
-	uint parent;
-
-	UUID uuid;
-
-	string username;
-
-	string displayName;
-
-	ubyte permissionLevel;
-
-	ubyte dimension;
-
-	Skin skin;
-
-	JSONValue gameData;
-
-	mixin IO!(parent, uuid, username, displayName, permissionLevel, dimension, skin, gameData);
-
-}
-
 /**
  * Removes a player from the node.
  * If the player is removed using Kick or Transfer this packet is not sent.
  */
 @clientbound struct Remove {
 
-	enum ubyte ID = 27;
+	enum ubyte ID = 26;
 
 	// reason
 	enum : ubyte {
@@ -265,7 +237,7 @@ struct AddSub {
  */
 @serverbound struct Kick {
 
-	enum ubyte ID = 28;
+	enum ubyte ID = 27;
 
 	/**
 	 * Player to be kicked.
@@ -300,7 +272,7 @@ struct AddSub {
  */
 @serverbound struct Transfer {
 
-	enum ubyte ID = 29;
+	enum ubyte ID = 28;
 
 	// on fail
 	enum : ubyte {
@@ -335,11 +307,12 @@ struct AddSub {
 }
 
 /**
- * Updates the player's display name when it is changed by the node.
+ * Updates the player's display name when it is changed.
+ * When this packet is sent by the node a copy is always sent back by the hub.
  */
-@serverbound struct UpdateDisplayName {
+@clientbound @serverbound struct UpdateDisplayName {
 
-	enum ubyte ID = 30;
+	enum ubyte ID = 29;
 
 	/**
 	 * Player's unique id given by the hub.
@@ -356,13 +329,13 @@ struct AddSub {
 }
 
 /**
- * Updates player's world. The player's dimension should be updated by
+ * Updates the player's world. The player's dimension should be updated by
  * the hub using worldId to identify the world added with AddWorld and
  * removed with RemoveWorld.
  */
 @serverbound struct UpdateWorld {
 
-	enum ubyte ID = 31;
+	enum ubyte ID = 30;
 
 	/**
 	 * Player's unique id given by the hub.
@@ -379,7 +352,11 @@ struct AddSub {
 
 }
 
-@serverbound struct UpdatePermissionLevel {
+/**
+ * Update the player's permission level.
+ * When this packet is sent by the node a copy is always sent back by the hub.
+ */
+@clientbound @serverbound struct UpdatePermissionLevel {
 	
 	// permission level
 	enum : ubyte {
@@ -392,7 +369,7 @@ struct AddSub {
 		
 	}
 
-	enum ubyte ID = 32;
+	enum ubyte ID = 31;
 
 	/**
 	 * Player's unique id given by the hub.
@@ -402,6 +379,46 @@ struct AddSub {
 	ubyte permissionLevel;
 
 	mixin IO!(permissionLevel);
+
+}
+
+/**
+ * Update the player's permissions.
+ * When this packet is sent by the node a copy is always sent back by the hub.
+ */
+@clientbound @serverbound struct UpdatePermissions {
+
+	enum ubyte ID = 32;
+
+	// permissions
+	enum : ubyte {
+
+		BUILD_AND_MINE = 0b00000001,
+		USE_DOORS_AND_SWITCHES = 0b00000010,
+		OPEN_CONTAINERS = 0b00000100,
+		ATTACK_PLAYERS = 0b00001000,
+		ATTACK_MOBS = 0b00010000,
+		OPERATOR = 0b00100000,
+		USE_TELEPORT = 0b01000000,
+
+	}
+
+	/**
+	 * Player's unique id given by the hub.
+	 */
+	uint hubId;
+
+	/**
+	 * Indicates which permissions are currently being updated.
+	 */
+	ubyte updated;
+
+	/**
+	 * Indicates the values of the updated permissions.
+	 */
+	ubyte permissions;
+	
+	mixin IO!(updated, permissions);
 
 }
 
