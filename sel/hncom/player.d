@@ -108,6 +108,15 @@ mixin template IO(E...) {
 		
 	}
 
+	// input mode
+	enum : ubyte {
+
+		KEYBOARD = 0,
+		TOUCH = 1,
+		CONTROLLER = 2,
+
+	}
+
 	/**
 	 * Player's unique id given by the hub.
 	 */
@@ -205,12 +214,16 @@ mixin template IO(E...) {
 	string language;
 
 	/**
+	 * Client's input mode. May be a controller, a mouse/keyboard set or a touch screen.
+	 */
+	ubyte inputMode;
+
+	/**
 	 * Example:
 	 * ---
 	 * // bedrock engine
 	 * {
 	 *    "edu": false,
-	 *    "GameVersion": "1.1.1.3",
 	 *    "DeviceOS": 1,
 	 *    "DeviceModel": "ONEPLUS A0001"
 	 * }
@@ -218,7 +231,7 @@ mixin template IO(E...) {
 	 */
 	JSONValue gameData;
 
-	mixin IO!(reason, type, protocol, version_, uuid, username, displayName, permissionLevel, permissions, dimension, viewDistance, clientAddress, serverAddress, skin, language, gameData);
+	mixin IO!(reason, type, protocol, version_, uuid, username, displayName, permissionLevel, permissions, dimension, viewDistance, clientAddress, serverAddress, skin, language, inputMode, gameData);
 
 }
 
