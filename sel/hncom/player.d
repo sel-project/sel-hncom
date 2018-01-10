@@ -78,9 +78,9 @@ mixin template IO(E...) {
 	// reason
 	enum : ubyte {
 
-		FIRST_JOIN,				/// The player has been automatically put on this node because it's a non-full main node.
-		TRANSFERRED,			/// The player has been transferred to this node.
-		FORCIBLY_TRANSFERRED,	/// The player was on a node that has wrongly disconnected (probably crashing) and the player has been transferred to the first non-full main node.
+		FIRST_JOIN = 0,				/// The player has been automatically put on this node because it's a non-full main node.
+		TRANSFERRED = 1,			/// The player has been transferred to this node.
+		FORCIBLY_TRANSFERRED = 2,	/// The player was on a node that has wrongly disconnected (probably crashing) and the player has been transferred to the first non-full main node.
 
 	}
 
@@ -88,11 +88,24 @@ mixin template IO(E...) {
 	enum : ubyte {
 
 		USER = 0,
-		OPERATOR = 1,
-		HOST = 2,
-		AUTOMATION = 3,
-		ADMIN = 4,
+		OPERATOR = 2,
+		HOST = 3,
+		AUTOMATION = 4,
+		ADMIN = 5,
 
+	}
+
+	// permissions
+	enum : ubyte {
+		
+		BUILD_AND_MINE = 64,
+		USE_DOORS_AND_SWITCHES = 32,
+		OPEN_CONTAINERS = 16,
+		ATTACK_PLAYERS = 8,
+		ATTACK_MOBS = 4,
+		//OPERATOR = 2, // same as PermissionLevel.OPERATOR
+		USE_TELEPORT = 1,
+		
 	}
 
 	/**
@@ -142,7 +155,17 @@ mixin template IO(E...) {
 	 */
 	string displayName;
 
+	/**
+	 * Player's permission level that indicates its administration power. It's set to USER
+	 * by default, which has no particular permission.
+	 */
 	ubyte permissionLevel;
+
+	/**
+	 * Inidicates what a player can and cnnot do on the world (build, mine, teleport, ...).
+	 * It's a bitflag.
+	 */
+	ubyte permissions;
 
 	/**
 	 * Dimension in which the player was playing before being transferred in the MCPE format
@@ -195,7 +218,7 @@ mixin template IO(E...) {
 	 */
 	JSONValue gameData;
 
-	mixin IO!(reason, type, protocol, version_, uuid, username, displayName, permissionLevel, dimension, viewDistance, clientAddress, serverAddress, skin, language, gameData);
+	mixin IO!(reason, type, protocol, version_, uuid, username, displayName, permissionLevel, permissions, dimension, viewDistance, clientAddress, serverAddress, skin, language, gameData);
 
 }
 
@@ -362,10 +385,10 @@ mixin template IO(E...) {
 	enum : ubyte {
 		
 		USER = 0,
-		OPERATOR = 1,
-		HOST = 2,
-		AUTOMATION = 3,
-		ADMIN = 4,
+		OPERATOR = 2,
+		HOST = 3,
+		AUTOMATION = 4,
+		ADMIN = 5,
 		
 	}
 
@@ -393,13 +416,13 @@ mixin template IO(E...) {
 	// permissions
 	enum : ubyte {
 
-		BUILD_AND_MINE = 0b00000001,
-		USE_DOORS_AND_SWITCHES = 0b00000010,
-		OPEN_CONTAINERS = 0b00000100,
-		ATTACK_PLAYERS = 0b00001000,
-		ATTACK_MOBS = 0b00010000,
-		OPERATOR = 0b00100000,
-		USE_TELEPORT = 0b01000000,
+		BUILD_AND_MINE = 64,
+		USE_DOORS_AND_SWITCHES = 32,
+		OPEN_CONTAINERS = 16,
+		ATTACK_PLAYERS = 8,
+		ATTACK_MOBS = 4,
+		OPERATOR = 2,
+		USE_TELEPORT = 1,
 
 	}
 
