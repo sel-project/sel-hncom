@@ -88,24 +88,11 @@ mixin template IO(E...) {
 	enum : ubyte {
 
 		USER = 0,
-		OPERATOR = 2,
-		HOST = 3,
-		AUTOMATION = 4,
-		ADMIN = 5,
+		OPERATOR = 1,
+		HOST = 2,
+		AUTOMATION = 3,
+		ADMIN = 4,
 
-	}
-
-	// permissions
-	enum : ubyte {
-		
-		BUILD_AND_MINE = 64,
-		USE_DOORS_AND_SWITCHES = 32,
-		OPEN_CONTAINERS = 16,
-		ATTACK_PLAYERS = 8,
-		ATTACK_MOBS = 4,
-		//OPERATOR = 2, // same as PermissionLevel.OPERATOR
-		USE_TELEPORT = 1,
-		
 	}
 
 	// input mode
@@ -171,12 +158,6 @@ mixin template IO(E...) {
 	ubyte permissionLevel;
 
 	/**
-	 * Inidicates what a player can and cnnot do on the world (build, mine, teleport, ...).
-	 * It's a bitflag.
-	 */
-	ubyte permissions;
-
-	/**
 	 * Dimension in which the player was playing before being transferred in the MCPE format
 	 * (0: overworld, 1: nether, 2: end). It shouldn't be considered if the client just joined
 	 * the server instead of being transferred.
@@ -231,7 +212,7 @@ mixin template IO(E...) {
 	 */
 	JSONValue gameData;
 
-	mixin IO!(reason, type, protocol, version_, uuid, username, displayName, permissionLevel, permissions, dimension, viewDistance, clientAddress, serverAddress, skin, language, inputMode, gameData);
+	mixin IO!(reason, type, protocol, version_, uuid, username, displayName, permissionLevel, dimension, viewDistance, clientAddress, serverAddress, skin, language, inputMode, gameData);
 
 }
 
@@ -398,10 +379,10 @@ mixin template IO(E...) {
 	enum : ubyte {
 		
 		USER = 0,
-		OPERATOR = 2,
-		HOST = 3,
-		AUTOMATION = 4,
-		ADMIN = 5,
+		OPERATOR = 1,
+		HOST = 2,
+		AUTOMATION = 3,
+		ADMIN = 4,
 		
 	}
 
@@ -419,52 +400,12 @@ mixin template IO(E...) {
 }
 
 /**
- * Update the player's permissions.
- * When this packet is sent by the node a copy is always sent back by the hub.
- */
-@clientbound @serverbound struct UpdatePermissions {
-
-	enum ubyte ID = 32;
-
-	// permissions
-	enum : ubyte {
-
-		BUILD_AND_MINE = 64,
-		USE_DOORS_AND_SWITCHES = 32,
-		OPEN_CONTAINERS = 16,
-		ATTACK_PLAYERS = 8,
-		ATTACK_MOBS = 4,
-		OPERATOR = 2,
-		USE_TELEPORT = 1,
-
-	}
-
-	/**
-	 * Player's unique id given by the hub.
-	 */
-	uint hubId;
-
-	/**
-	 * Indicates which permissions are currently being updated.
-	 */
-	ubyte updated;
-
-	/**
-	 * Indicates the values of the updated permissions.
-	 */
-	ubyte permissions;
-	
-	mixin IO!(updated, permissions);
-
-}
-
-/**
  * Notifies the node that the player's view distance has been updated client-side.
  * The node may decide to not accept the new view distance and not send the required chunks.
  */
 @clientbound struct UpdateViewDistance {
 
-	enum ubyte ID = 33;
+	enum ubyte ID = 32;
 
 	/**
 	 * Player's unique id given by the hub.
@@ -485,7 +426,7 @@ mixin template IO(E...) {
  */
 @clientbound struct UpdateLanguage {
 
-	enum ubyte ID = 34;
+	enum ubyte ID = 33;
 
 	/**
 	 * Player's unique id given by the hub.
@@ -506,7 +447,7 @@ mixin template IO(E...) {
  */
 @clientbound struct UpdateLatency {
 
-	enum ubyte ID = 35;
+	enum ubyte ID = 34;
 
 	/**
 	 * Player's unique id given by the hub.
@@ -529,7 +470,7 @@ mixin template IO(E...) {
  */
 @clientbound struct UpdatePacketLoss {
 
-	enum ubyte ID = 36;
+	enum ubyte ID = 35;
 
 	/**
 	 * Player's unique id given by the hub.
@@ -548,7 +489,7 @@ mixin template IO(E...) {
 
 @clientbound @serverbound struct GamePacket {
 	
-	enum ubyte ID = 37;
+	enum ubyte ID = 36;
 
 	/**
 	 * Player's unique id given by the hub.
@@ -562,7 +503,7 @@ mixin template IO(E...) {
 
 @serverbound struct SerializedGamePacket {
 
-	enum ubyte ID = 38;
+	enum ubyte ID = 37;
 
 	/**
 	 * Player's unique id given by the hub.
@@ -576,7 +517,7 @@ mixin template IO(E...) {
 
 @serverbound struct OrderedGamePacket {
 
-	enum ubyte ID = 39;
+	enum ubyte ID = 38;
 
 	/**
 	 * Player's unique id given by the hub.
@@ -591,7 +532,7 @@ mixin template IO(E...) {
 
 @clientbound @serverbound struct Packets {
 
-	enum ubyte ID = 40;
+	enum ubyte ID = 39;
 
 	/**
 	 * Player's unique id given by the hub.
