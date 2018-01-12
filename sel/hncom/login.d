@@ -152,6 +152,12 @@ import sel.hncom.io : IO;
 	string[] acceptedLanguages;
 
 	/**
+	 * Indicates whether the web admin protocol is active on the hub. If it is the
+	 * node should send the port where it will listen for connections in its info packet.
+	 */
+	bool webAdmin;
+
+	/**
 	 * Optional informations about the server's software, social accounts, system and options.
 	 * Example:
 	 * ---
@@ -184,7 +190,7 @@ import sel.hncom.io : IO;
 	 */
 	JSONValue additionalJSON;
 
-	mixin IO!(serverId, reservedUUIDs, displayName, gamesInfo, online, max, language, acceptedLanguages, additionalJSON);
+	mixin IO!(serverId, reservedUUIDs, displayName, gamesInfo, online, max, language, acceptedLanguages, webAdmin, additionalJSON);
 
 }
 
@@ -217,6 +223,12 @@ import sel.hncom.io : IO;
 	Plugin[] plugins;
 
 	/**
+	 * Port where the node is listening for connections, if the web admin protocol
+	 * is active on the hub.
+	 */
+	ushort webAdminPort;
+
+	/**
 	 * Optional informations about the server's software and system,
 	 * similar to HubInfo's additionalJson field.
 	 * Example:
@@ -238,6 +250,6 @@ import sel.hncom.io : IO;
 	 */
 	JSONValue additionalJSON;
 
-	mixin IO!(acceptedGames, max, plugins, additionalJSON);
+	mixin IO!(acceptedGames, max, plugins, webAdminPort, additionalJSON);
 
 }

@@ -453,7 +453,7 @@ import sel.hncom.io : IO;
  * Gives the node the credentials that will be used by a remote panel
  * client to connect to a world.
  */
-@clientbound struct PanelCredentials {
+@clientbound struct WebAdminCredentials {
 
 	enum ubyte ID = 24;
 
