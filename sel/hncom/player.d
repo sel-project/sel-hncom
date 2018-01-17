@@ -500,6 +500,7 @@ mixin template IO(E...) {
 	 * Player's unique id given by the hub.
 	 */
 	uint hubId;
+
 	ubyte[] payload;
 	
 	mixin IO!(payload);
@@ -514,6 +515,7 @@ mixin template IO(E...) {
 	 * Player's unique id given by the hub.
 	 */
 	uint hubId;
+
 	ubyte[] payload;
 
 	mixin IO!(payload);
@@ -528,7 +530,9 @@ mixin template IO(E...) {
 	 * Player's unique id given by the hub.
 	 */
 	uint hubId;
+
 	uint order;
+
 	ubyte[] payload;
 
 	mixin IO!(order, payload);
@@ -543,6 +547,7 @@ mixin template IO(E...) {
 	 * Player's unique id given by the hub.
 	 */
 	uint hubId;
+
 	Tuple!(ubyte, "id", ubyte[], "payload")[] packets;
 
 	mixin IO!(packets);

@@ -16,7 +16,7 @@ module sel.hncom.io;
 
 import std.bitmanip : nativeToBigEndian, nativeToLittleEndian, bigEndianToNative, littleEndianToNative;
 import std.json : JSONValue, parseJSON, JSONException;
-import std.socket : Address, InternetAddress, Internet6Address;
+import std.socket : Address, InternetAddress, Internet6Address, UnknownAddress;
 import std.traits : isArray, isDynamicArray, isAssociativeArray, KeyType, ValueType, isIntegral, isSigned, Unsigned;
 import std.typecons : isTuple;
 import std.uuid : UUID;
@@ -167,11 +167,12 @@ T decodeType(T)(ubyte[] buffer, ref size_t index) {
 		switch(decodeType!ubyte(buffer, index)) {
 			case 4: return new InternetAddress(decodeAddress!uint(buffer, index), decodeAddress!ushort(buffer, index));
 			case 16: return new Internet6Address(decodeType!(ubyte[16])(buffer, index), decodeAddress!ushort(buffer, index));
-			default: return null;
+			default: return new UnknownAddress();
 		}
 	} else static if(T.sizeof == 1) {
 		return cast(T)buffer[index++];
 	} else static if(isIntegral!T) {
+		// short, int, long
 		static if(isSigned!T) {
 			return cast(T)(decodeType!(Unsigned!T)(buffer, index) - 1);
 		} else {
@@ -186,6 +187,7 @@ T decodeType(T)(ubyte[] buffer, ref size_t index) {
 			return ret;
 		}
 	} else {
+		// float, double
 		ubyte[T.sizeof] data = buffer[index..index+=T.sizeof];
 		return bigEndianToNative!T(data);
 	}
@@ -267,7 +269,7 @@ unittest {
 	assert(encode(cast(Address)new Internet6Address("::1", 80)) == [16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 80, 0]);
 	assert(encode(Address.init) == [0]);
 
-	assert(decode!Address([0]) is null);
+	assert(cast(UnknownAddress)decode!Address([0]));
 	assert(decode!Address([4, 1, 1, 168, 192, 80, 0]) == new InternetAddress("192.168.1.1", 80));
 	assert(decode!Address([16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]).toString() == "[::]:0");
 
@@ -279,7 +281,6 @@ unittest {
 
 	assert(decode!(bool[])([2, 0, 1]) == [false, true]);
 	assert(decode!(uint[])([3, 0, 1, 2]) == [0, 1, 2]);
-	assert(decode!(Address[])([3, 0, 0, 0]) == [null, null, null]);
 
 	// static arrays
 

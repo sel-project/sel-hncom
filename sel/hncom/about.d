@@ -14,6 +14,10 @@
  */
 module sel.hncom.about;
 
+/**
+ * Version of the protocol.
+ * The hub and the connecting nodes must use the same protocol.
+ */
 enum uint __PROTOCOL__ = 8;
 
 enum ubyte __BEDROCK__ = 0;
