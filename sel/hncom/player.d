@@ -127,14 +127,6 @@ mixin template IO(E...) {
 	uint protocol;
 
 	/**
-	 * Version of the game used by the client, usually in the format major.minor[.patch],
-	 * calculated by the server or passed by the client during the authentication process.
-	 * The node should verify that the version exists and matches the protocol indicated
-	 * in the previous field.
-	 */
-	string version_;
-
-	/**
 	 * Client's UUID, given by Mojang's or Microsoft's services if the server is in
 	 * online mode or given by the client (and not verified) if the server is in offline mode.
 	 */
@@ -150,6 +142,19 @@ mixin template IO(E...) {
 	 * to the username but it can be updated by the node using the UpdateDisplayName packet.
 	 */
 	string displayName;
+	
+	/**
+	 * Name of the game played by the client; for example Minecraft or Minecraft: Java Edition.
+	 */
+	string gameName;
+	
+	/**
+	 * Version of the game used by the client, usually in the format major.minor[.patch],
+	 * calculated by the server or given by the client during the authentication process.
+	 * The node should verify that the version exists and matches the protocol indicated
+	 * in the protocol field.
+	 */
+	string gameVersion;
 
 	/**
 	 * Player's permission level that indicates its administration power. It's set to USER
@@ -212,7 +217,7 @@ mixin template IO(E...) {
 	 */
 	JSONValue gameData;
 
-	mixin IO!(reason, type, protocol, version_, uuid, username, displayName, permissionLevel, dimension, viewDistance, clientAddress, serverAddress, skin, language, inputMode, gameData);
+	mixin IO!(reason, type, protocol, uuid, username, displayName, gameName, gameVersion, permissionLevel, dimension, viewDistance, clientAddress, serverAddress, skin, language, inputMode, gameData);
 
 }
 
