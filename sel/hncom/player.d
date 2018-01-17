@@ -69,7 +69,7 @@ mixin template IO(E...) {
  */
 @clientbound struct Add {
 
-	enum ubyte ID = 25;
+	enum ubyte ID = 23;
 
 	alias ServerAddress = Tuple!(string, "ip", ushort, "port");
 
@@ -222,7 +222,7 @@ mixin template IO(E...) {
  */
 @clientbound struct Remove {
 
-	enum ubyte ID = 26;
+	enum ubyte ID = 24;
 
 	// reason
 	enum : ubyte {
@@ -254,7 +254,7 @@ mixin template IO(E...) {
  */
 @serverbound struct Kick {
 
-	enum ubyte ID = 27;
+	enum ubyte ID = 25;
 
 	/**
 	 * Player to be kicked.
@@ -289,7 +289,7 @@ mixin template IO(E...) {
  */
 @serverbound struct Transfer {
 
-	enum ubyte ID = 28;
+	enum ubyte ID = 26;
 
 	// on fail
 	enum : ubyte {
@@ -329,7 +329,7 @@ mixin template IO(E...) {
  */
 @clientbound @serverbound struct UpdateDisplayName {
 
-	enum ubyte ID = 29;
+	enum ubyte ID = 27;
 
 	/**
 	 * Player's unique id given by the hub.
@@ -352,7 +352,7 @@ mixin template IO(E...) {
  */
 @serverbound struct UpdateWorld {
 
-	enum ubyte ID = 30;
+	enum ubyte ID = 28;
 
 	/**
 	 * Player's unique id given by the hub.
@@ -375,6 +375,8 @@ mixin template IO(E...) {
  */
 @clientbound @serverbound struct UpdatePermissionLevel {
 	
+	enum ubyte ID = 29;
+	
 	// permission level
 	enum : ubyte {
 		
@@ -385,8 +387,6 @@ mixin template IO(E...) {
 		ADMIN = 4,
 		
 	}
-
-	enum ubyte ID = 31;
 
 	/**
 	 * Player's unique id given by the hub.
@@ -405,7 +405,7 @@ mixin template IO(E...) {
  */
 @clientbound struct UpdateViewDistance {
 
-	enum ubyte ID = 32;
+	enum ubyte ID = 30;
 
 	/**
 	 * Player's unique id given by the hub.
@@ -426,7 +426,7 @@ mixin template IO(E...) {
  */
 @clientbound struct UpdateLanguage {
 
-	enum ubyte ID = 33;
+	enum ubyte ID = 31;
 
 	/**
 	 * Player's unique id given by the hub.
@@ -447,7 +447,7 @@ mixin template IO(E...) {
  */
 @clientbound struct UpdateLatency {
 
-	enum ubyte ID = 34;
+	enum ubyte ID = 32;
 
 	/**
 	 * Player's unique id given by the hub.
@@ -470,7 +470,7 @@ mixin template IO(E...) {
  */
 @clientbound struct UpdatePacketLoss {
 
-	enum ubyte ID = 35;
+	enum ubyte ID = 33;
 
 	/**
 	 * Player's unique id given by the hub.
@@ -489,7 +489,7 @@ mixin template IO(E...) {
 
 @clientbound @serverbound struct GamePacket {
 	
-	enum ubyte ID = 36;
+	enum ubyte ID = 34;
 
 	/**
 	 * Player's unique id given by the hub.
@@ -503,7 +503,7 @@ mixin template IO(E...) {
 
 @serverbound struct SerializedGamePacket {
 
-	enum ubyte ID = 37;
+	enum ubyte ID = 35;
 
 	/**
 	 * Player's unique id given by the hub.
@@ -517,7 +517,7 @@ mixin template IO(E...) {
 
 @serverbound struct OrderedGamePacket {
 
-	enum ubyte ID = 38;
+	enum ubyte ID = 36;
 
 	/**
 	 * Player's unique id given by the hub.
@@ -532,7 +532,7 @@ mixin template IO(E...) {
 
 @clientbound @serverbound struct Packets {
 
-	enum ubyte ID = 39;
+	enum ubyte ID = 37;
 
 	/**
 	 * Player's unique id given by the hub.

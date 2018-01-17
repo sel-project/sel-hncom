@@ -14,7 +14,7 @@
  */
 module sel.hncom.about;
 
-enum uint __PROTOCOL__ = 7;
+enum uint __PROTOCOL__ = 8;
 
 enum ubyte __BEDROCK__ = 0;
 
