@@ -14,7 +14,7 @@
  */
 module sel.hncom.io;
 
-import std.bitmanip : nativeToBigEndian, nativeToLittleEndian, bigEndianToNative, littleEndianToNative;
+import std.bitmanip : nativeToBigEndian, bigEndianToNative;
 import std.json : JSONValue, parseJSON, JSONException;
 import std.socket : Address, InternetAddress, Internet6Address, UnknownAddress;
 import std.traits : isArray, isDynamicArray, isAssociativeArray, KeyType, ValueType, isIntegral, isSigned, Unsigned;
@@ -90,7 +90,7 @@ void encodeType(T)(T value, ref ubyte[] buffer) {
 			encodeAddress(v4.port, buffer);
 		} else if(cast(Internet6Address)value) {
 			auto v6 = cast(Internet6Address)value;
-			buffer ~= ubyte(16);
+			buffer ~= ubyte(6);
 			buffer ~= v6.addr;
 			encodeAddress(v6.port, buffer);
 		} else {
@@ -135,7 +135,7 @@ void encodeArray(T)(T array, ref ubyte[] buffer) if(isArray!T) {
 }
 
 void encodeAddress(T)(T value, ref ubyte[] buffer) if(isIntegral!T) {
-	buffer ~= nativeToLittleEndian(value);
+	buffer ~= nativeToBigEndian(value);
 }
 
 T decodeType(T)(ubyte[] buffer, ref size_t index) {
@@ -166,7 +166,7 @@ T decodeType(T)(ubyte[] buffer, ref size_t index) {
 	} else static if(is(T == Address)) {
 		switch(decodeType!ubyte(buffer, index)) {
 			case 4: return new InternetAddress(decodeAddress!uint(buffer, index), decodeAddress!ushort(buffer, index));
-			case 16: return new Internet6Address(decodeType!(ubyte[16])(buffer, index), decodeAddress!ushort(buffer, index));
+			case 6: return new Internet6Address(decodeType!(ubyte[16])(buffer, index), decodeAddress!ushort(buffer, index));
 			default: return new UnknownAddress();
 		}
 	} else static if(T.sizeof == 1) {
@@ -214,7 +214,7 @@ T decodeArray(T)(size_t length, ubyte[] buffer, ref size_t index) if(isArray!T) 
 
 T decodeAddress(T)(ubyte[] buffer, ref size_t index) if(isIntegral!T) {
 	ubyte[T.sizeof] data = buffer[index..index+=T.sizeof];
-	return littleEndianToNative!T(data);
+	return bigEndianToNative!T(data);
 }
 
 unittest {
@@ -265,13 +265,13 @@ unittest {
 
 	// addresses
 
-	assert(encode(cast(Address)new InternetAddress("127.0.0.1", 0)) == [4, 1, 0, 0, 127, 0, 0]);
-	assert(encode(cast(Address)new Internet6Address("::1", 80)) == [16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 80, 0]);
+	assert(encode(cast(Address)new InternetAddress("127.0.0.1", 0)) == [4, 127, 0, 0, 1, 0, 0]);
+	assert(encode(cast(Address)new Internet6Address("::1", 80)) == [6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 80]);
 	assert(encode(Address.init) == [0]);
 
 	assert(cast(UnknownAddress)decode!Address([0]));
-	assert(decode!Address([4, 1, 1, 168, 192, 80, 0]) == new InternetAddress("192.168.1.1", 80));
-	assert(decode!Address([16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]).toString() == "[::]:0");
+	assert(decode!Address([4, 192, 168, 1, 1, 0, 80]) == new InternetAddress("192.168.1.1", 80));
+	assert(decode!Address([6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]).toString() == "[::]:0");
 
 	// dynamic arrays
 
@@ -303,6 +303,6 @@ unittest {
 	alias Test = Tuple!(Address, "address", int, "number");
 
 	assert(encode(Test.init) == [0, 1]);
-	assert(decode!Test([4, 0, 0, 0, 0, 80, 0, 0]) == Test(new InternetAddress("0.0.0.0", 80), -1));
+	assert(decode!Test([4, 0, 0, 0, 0, 0, 80, 0]) == Test(new InternetAddress("0.0.0.0", 80), -1));
 
 }

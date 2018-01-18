@@ -34,7 +34,7 @@ import sel.hncom.io : IO;
 	ubyte id;
 
 	/**
-	 * List of the encoded packets (with the ID if the id field is 0,
+	 * List of the encoded packets. With the ID if the id field is 0,
 	 * without the ID otherwise.
 	 */
 	ubyte[][] packets;
@@ -205,6 +205,9 @@ unittest {
 
 	c = Compressed.compress(RemoveWorld(1).encode(), RemoveWorld(50).encode());
 	assert(c.encode() == [Compressed.ID, 6, 21, 14, 120, 156, 19, 101, 98, 100, 100, 52, 2, 0, 0, 201, 0, 77]);
+
+	c = Compressed.compress(RemoveNode(43).encode(), RemoveWorld(11).encode());
+	assert(c.encode() == [Compressed.ID, 8, 0, 16, 120, 156, 99, 96, 98, 226, 210, 102, 18, 229, 6, 0, 1, 59, 0, 92]);
 
 	c = Compressed.compress(uc);
 	assert(c.encode() == [Compressed.ID, 6, RemoveWorld.ID, 14, 120, 156, 19, 101, 98, 100, 100, 100, 2, 0, 0, 153, 0, 29]);
