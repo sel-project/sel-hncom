@@ -12,6 +12,12 @@
  * See the GNU Lesser General Public License for more details.
  * 
  */
+/**
+ * Copyright: 2017-2018 sel-project
+ * License: LGPL-3.0
+ * Authors: Kripth
+ * Source: $(HTTP github.com/sel-project/sel-hncom/sel/hncom/login.d, sel/hncom/login.d)
+ */
 module sel.hncom.login;
 
 import std.json : JSONValue;
