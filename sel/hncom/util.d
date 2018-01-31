@@ -218,8 +218,4 @@ unittest {
 	c = Compressed.compress(uc);
 	c.encode();
 
-	auto ucc = Compressed.fromBuffer(cast(ubyte[])[6, RemoveWorld.ID, 14, 120, 156, 19, 101, 98, 100, 100, 100, 2, 0, 0, 153, 0, 29]).uncompress();
-	assert(ucc.id == RemoveWorld.ID);
-	assert(ucc.packets == [[1], [2]]);
-
 }

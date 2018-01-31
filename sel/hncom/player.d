@@ -120,6 +120,12 @@ mixin template IO(E...) {
 	ubyte reason;
 
 	/**
+	 * Optional data set by the Transfer packet if the player was transferred from another node.
+	 * The content depends on the node's implementation or even by one of its plugins.
+	 */
+	ubyte[] transferMessage;
+
+	/**
 	 * Game used by the player, which could either be Minecraft: Java Edition or Minecraft (Bedrock Engine).
 	 * It should be one of the keys given in NodeInfo's acceptedGames field.
 	 */
@@ -222,7 +228,7 @@ mixin template IO(E...) {
 	 */
 	JSONValue gameData;
 
-	mixin IO!(reason, type, protocol, uuid, username, displayName, gameName, gameVersion, permissionLevel, dimension, viewDistance, clientAddress, serverAddress, skin, language, inputMode, gameData);
+	mixin IO!(reason, transferMessage, type, protocol, uuid, username, displayName, gameName, gameVersion, permissionLevel, dimension, viewDistance, clientAddress, serverAddress, skin, language, inputMode, gameData);
 
 }
 
@@ -304,9 +310,9 @@ mixin template IO(E...) {
 	// on fail
 	enum : ubyte {
 
-		DISCONNECT,		/// Disconnect with `End of Stream` message.
-		AUTO,			/// Connect to the first available node or disconnects if there isn't one.
-		RECONNECT,		/// Connect to the same node, but as a new player.
+		DISCONNECT = 0,		/// Disconnect with `End of Stream` message.
+		AUTO = 1,			/// Connect to the first available node or disconnects if there isn't one.
+		RECONNECT = 2,		/// Connect to the same node, but as a new player.
 
 	}
 
@@ -323,13 +329,19 @@ mixin template IO(E...) {
 	uint node;
 
 	/**
+	 * Optional data that will be always sent with the Add packet when the player is transferred.
+	 * The content depends on the node's implementation or even by one of its plugins.
+	 */
+	ubyte[] message;
+
+	/**
 	 * Indicates the action to be taken when a transfer fails because the indicated node is
 	 * not connected anymore or it cannot accept the given player's game type or protocol.
 	 * If the indicated node is full the player will be simply disconnected with the `Server Full` message.
 	 */
 	ubyte onFail = DISCONNECT;
 
-	mixin IO!(node, onFail);
+	mixin IO!(node, message, onFail);
 
 }
 
