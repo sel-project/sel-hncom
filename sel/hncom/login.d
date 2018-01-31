@@ -33,17 +33,17 @@ import sel.hncom.io : IO;
 @serverbound struct ConnectionRequest {
 
 	enum ubyte ID = 1;
-
-	/**
-	 * Password, if the hub requires one, or an empty string.
-	 */
-	string password;
-
+	
 	/**
 	 * Name of the node that will be validated by the hub. It should always be
 	 * lowercase and only contain letters, numbers, dashes and underscores.
 	 */
 	string name;
+
+	/**
+	 * Password, if the hub requires one, or an empty string.
+	 */
+	string password;
 
 	/**
 	 * Indicates whether the node accepts clients when they first connect to the
