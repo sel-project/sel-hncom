@@ -16,7 +16,7 @@
  * Packets related to a player. The first field of every packet is an `hub id`
  * that uniquely identifies a player in the hub and never changes until it disconnects.
  * 
- * Copyright: 2017-2018 sel-project
+ * Copyright: Copyright © 2017-2018 SEL
  * License: LGPL-3.0
  * Authors: Kripth
  * Source: $(HTTP github.com/sel-project/sel-hncom/sel/hncom/player.d, sel/hncom/player.d)

@@ -13,7 +13,7 @@
  * 
  */
 /**
- * Copyright: 2017-2018 sel-project
+ * Copyright: Copyright © 2017-2018 SEL
  * License: LGPL-3.0
  * Authors: Kripth
  * Source: $(HTTP github.com/sel-project/sel-hncom/sel/hncom/util.d, sel/hncom/util.d)
