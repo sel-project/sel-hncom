@@ -190,7 +190,7 @@ import sel.hncom.io : IO;
 	 */
 	JSONValue additionalJSON;
 
-	mixin IO!(serverId, reservedUUIDs, displayName, gamesInfo, online, max, language, acceptedLanguages, webAdmin, additionalJSON);
+	mixin IO!(serverId, reservedUUIDs, displayName, gamesInfo, online, max, acceptedLanguages, webAdmin, additionalJSON);
 
 }
 
@@ -203,7 +203,7 @@ import sel.hncom.io : IO;
 
 	enum uint UNLIMITED = 0;
 
-	alias Plugin = Tuple!(string, "name", string, "version_");
+	alias Plugin = Tuple!(uint, "id", string, "name", string, "version_");
 
 	/**
 	 * Informations about the games accepted by the node. There should be at least
@@ -218,7 +218,9 @@ import sel.hncom.io : IO;
 	uint max;
 
 	/**
-	 * List of plugins loaded on the node for creating queries on the hub.
+	 * List of plugins currently loaded on the node.
+	 * This field is used only for information purposes (as displaying the
+	 * plugins in the querying protocol).
 	 */
 	Plugin[] plugins;
 
