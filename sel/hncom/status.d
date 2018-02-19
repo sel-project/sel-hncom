@@ -223,6 +223,9 @@ import sel.hncom.io : IO;
 	
 }
 
+/**
+ * Updates the server's display name.
+ */
 @clientbound struct UpdateDisplayName {
 
 	enum ubyte ID = 14;
@@ -233,6 +236,9 @@ import sel.hncom.io : IO;
 
 }
 
+/**
+ * Updates the MOTD of one of the supported games.
+ */
 @clientbound struct UpdateMOTD {
 
 	enum ubyte ID = 15;
@@ -289,6 +295,9 @@ import sel.hncom.io : IO;
 
 }
 
+/**
+ * Updates the accepted protocols for one of the supported games.
+ */
 @clientbound struct UpdateSupportedProtocols {
 
 	enum ubyte ID = 18;
@@ -323,6 +332,10 @@ import sel.hncom.io : IO;
 
 }
 
+/**
+ * Updates the language files. The content of this packet is usually
+ * readed from plugins' language files.
+ */
 @serverbound struct UpdateLanguageFiles {
 
 	enum ubyte ID = 20;

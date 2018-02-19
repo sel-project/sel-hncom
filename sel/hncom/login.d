@@ -145,15 +145,9 @@ import sel.hncom.io : IO;
 	int max;
 
 	/**
-	 * Default server's language in format (language_COUNTRY, e.g. en_GB) and also the
-	 * default language for players that don't specify their language or for the ones
-	 * which language is not supported by the server.
-	 */
-	string language;
-
-	/**
-	 * Languages accepted by the server in the same format as language.
-	 * The list should always contain at least one element (the default language).
+	 * Languages accepted by the server in format ISO 639.1 (language code) underscore
+	 * ISO 3166 (country code), e.g. en_US.
+	 * The list must contain at least one element.
 	 */
 	string[] acceptedLanguages;
 
@@ -169,8 +163,8 @@ import sel.hncom.io : IO;
 	 * ---
 	 * {
 	 *   "software": {
-	 *      "name": "selery",
-	 *      "version": "0.0.1",
+	 *      "name": "Selery",
+	 *      "version": "0.1.0",
 	 *      "stable": true
 	 *   },
 	 *   "minecraft": {
@@ -241,8 +235,8 @@ import sel.hncom.io : IO;
 	 * ---
 	 * {
 	 *   "software": {
-	 *      "name": "selery",
-	 *      "version": "0.0.1",
+	 *      "name": "Selery",
+	 *      "version": "0.1.0",
 	 *      "stable": true
 	 *   },
 	 *   "system": {

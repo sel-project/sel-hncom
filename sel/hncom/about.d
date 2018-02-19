@@ -24,10 +24,12 @@ module sel.hncom.about;
  * Version of the protocol.
  * The hub and the connecting nodes must use the same protocol.
  */
-enum uint __PROTOCOL__ = 8;
+enum uint __PROTOCOL__ = 9;
 
+/// Identifier for Minecraft (Bedrock Engine)
 enum ubyte __BEDROCK__ = 0;
 
+/// Identifier for Minecraft: Java Edition
 enum ubyte __JAVA__ = 1;
 
 enum clientbound;
